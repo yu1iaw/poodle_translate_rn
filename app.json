@@ -1,15 +1,19 @@
 {
   "expo": {
-    "name": "translate-app",
+    "name": "Poodle translate",
     "slug": "translate-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/splashscreen.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#1a73e8"
     },
     "assetBundlePatterns": [
       "**/*"
