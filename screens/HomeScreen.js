@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux';
-import { Text, View, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, FlatList } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, ActivityIndicator, FlatList, ToastAndroid } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons, AntDesign } from "@expo/vector-icons";
 import * as Clipboard from 'expo-clipboard';
 import colors from "../utils/colors";
@@ -34,6 +34,7 @@ const loadData = () => {
 
 let from = "en";
 let to = "fr";
+let txt = '';
 
 export function HomeScreen({ navigation, route }) {
 	const params = route.params || {};
@@ -41,7 +42,7 @@ export function HomeScreen({ navigation, route }) {
 	const dispatch = useDispatch();
 	const history = useSelector(state => state.history.items);
 
-	const [value, setValue] = useState("");
+	const [value, setValue] = useState(txt);
 	const [output, setOutput] = useState("");
 	const [languageFrom, setLanguageFrom] = useState(from);
 	const [languageTo, setLanguageTo] = useState(to);
@@ -107,7 +108,9 @@ export function HomeScreen({ navigation, route }) {
 		await Clipboard.setStringAsync(output);
 		setTimeout(() => {
 			setIsCopied(false);
-			setValue("");
+			txt = '';
+			setValue(txt);
+			showToastWithGravity();
 		}, 200)
 	}, [output])
 
@@ -116,6 +119,14 @@ export function HomeScreen({ navigation, route }) {
 		setLanguageTo(to);
 		setLanguageFrom(from);
 	}
+
+	const showToastWithGravity = () => {
+		ToastAndroid.showWithGravity(
+		  'Copied!',
+		  ToastAndroid.SHORT,
+		  ToastAndroid.CENTER,
+		);
+	  };
 
 
 	return (
@@ -152,7 +163,10 @@ export function HomeScreen({ navigation, route }) {
 					multiline 
 					placeholder="Enter text to translate" 
 					value={value} 
-					onChangeText={(text) => setValue(text)} 
+					onChangeText={(text) => {
+						txt = text;
+						setValue(txt);
+					}} 
 					style={styles.textInput} 
 				/>
 				<TouchableOpacity 
